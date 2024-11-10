@@ -1,0 +1,52 @@
+name: masud-postgres-project
+
+services:
+  app:
+    build: .
+    image: masud-project:masud-test-image
+    container_name: masud-test-container
+    command: /app/entrypoint.sh
+    ports:
+      - "8001:8001"
+    restart: unless-stopped
+    volumes:
+      - .:/app
+    env_file:
+      - ./a_core/.env
+    depends_on:
+      - postgres
+
+
+  postgres:
+    image: postgres
+    container_name: masud-postgres-container
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    restart: unless-stopped
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+
+
+
+#! Another service =========
+
+# name: masud-test-docker-project
+
+# services:
+#   app:
+#     image: proj:masud-test-project
+#     container_name: masud-test-docker-container
+#     ports:
+#       - "8001:8001"
+#     volumes:
+#       - .:/app
+
+
+
